@@ -29,7 +29,6 @@
 		"typescript/no-require-imports": "error",
 		"typescript/no-namespace": "error",
 		"typescript/array-type": ["error", { "default": "generic" }],
-		"import/no-reexport": "error",
 		"import/no-anonymous-default-export": "error",
 		"promise/no-return-wrap": "error",
 		"eslint/array-callback-return": "error",

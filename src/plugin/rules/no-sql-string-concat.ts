@@ -10,7 +10,7 @@ const hasSqlKeyword = (node: ReturnType<typeof toNode>): boolean => {
 		const expressions = Array.isArray(node.expressions) ? node.expressions : [];
 		const quasis = Array.isArray(node.quasis) ? node.quasis : [];
 		return expressions.length > 0 && quasis.some((quasi) =>
-			SQL_KEYWORD_PATTERN.test(String((quasi as { value?: { cooked?: string } }).value?.cooked ?? "")));
+			SQL_KEYWORD_PATTERN.test((quasi as { value?: { cooked?: string } }).value?.cooked ?? ""));
 	}
 	return node.type === "Literal" && typeof node.value === "string" && SQL_KEYWORD_PATTERN.test(node.value);
 };
