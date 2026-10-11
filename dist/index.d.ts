@@ -1,0 +1,4 @@
+export { default as plugin } from "./plugin/index.js";
+export declare const presetNames: readonly ["core-clean", "typescript-hard-mode", "imports-hygiene", "promise-safety", "naming-discipline", "effect-runtime", "effect-error-model", "effect-composition", "effect-observability", "strict-core", "strict-runtime", "strict-drizzle", "strict-web", "strict-tests", "strict-tests-jest", "strict-effect", "strict", "recommended"];
+export type PresetName = (typeof presetNames)[number];
+//# sourceMappingURL=index.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"effect-utils.d.ts","sourceRoot":"","sources":["../../../src/plugin/rules/effect-utils.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,aAAa,CAAC;AAa3C,eAAO,MAAM,kBAAkB,aAAiC,CAAC;AAEjE,eAAO,MAAM,YAAY,GAAI,SAAS,OAAO,EAAE,UAAU,MAAM,GAAG,SAAS,KAAG,OAQ7E,CAAC;AAEF,eAAO,MAAM,uCAAuC,GAAI,SAAS,OAAO,KAAG,WAAW,CAAC,MAAM,CA8B5F,CAAC"}
