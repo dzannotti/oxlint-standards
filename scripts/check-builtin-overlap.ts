@@ -13,7 +13,7 @@ const catalogPath = resolve(rootDir, "src/plugin/rule-catalog.json");
 const catalogRaw = readFileSync(catalogPath, "utf8");
 const catalog = JSON.parse(catalogRaw) as ReadonlyArray<CatalogEntry>;
 
-const overlapProcess = spawnSync("bunx", ["oxlint", "--rules"], {
+const overlapProcess = spawnSync("bunx", ["oxlint", "--rules", "--format", "json"], {
 	encoding: "utf8",
 	stdio: ["ignore", "pipe", "pipe"],
 });
@@ -24,20 +24,12 @@ if (overlapProcess.status !== 0) {
 }
 
 const builtInRules = new Set<string>();
-const lines = overlapProcess.stdout.split("\n");
-for (const line of lines) {
-	if (!line.startsWith("| ")) continue;
-	if (line.startsWith("| Rule name")) continue;
-	if (line.includes("----")) continue;
-	const columns = line
-		.split("|")
-		.map((column) => column.trim())
-		.filter((column) => column.length > 0);
-	if (columns.length < 2) continue;
-	const ruleName = columns[0];
-	const pluginName = columns[1];
-	if (!ruleName || !pluginName) continue;
-	builtInRules.add(`${pluginName}/${ruleName}`);
+const listed = JSON.parse(overlapProcess.stdout) as ReadonlyArray<{ scope: string; value: string }>;
+for (const { scope, value } of listed) {
+	builtInRules.add(`${scope}/${value}`);
+}
+if (builtInRules.size === 0) {
+	throw new Error("oxlint --rules listed no rules; the rule table format may have changed.");
 }
 
 const failures: Array<string> = [];

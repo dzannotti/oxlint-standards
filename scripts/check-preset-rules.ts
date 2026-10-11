@@ -18,7 +18,7 @@ import { resolve } from "node:path";
 
 const presetsDir = resolve(process.cwd(), "presets");
 
-const rulesProcess = spawnSync("bunx", ["oxlint", "--rules"], {
+const rulesProcess = spawnSync("bunx", ["oxlint", "--rules", "--format", "json"], {
 	encoding: "utf8",
 	stdio: ["ignore", "pipe", "pipe"],
 });
@@ -34,19 +34,13 @@ const normalise = (name: string): string => name.replaceAll("_", "-");
 
 const builtInRules = new Set<string>();
 const pluginNamespaces = new Set<string>();
-for (const line of rulesProcess.stdout.split("\n")) {
-	if (!line.startsWith("| ")) continue;
-	if (line.startsWith("| Rule name")) continue;
-	if (line.includes("----")) continue;
-	const columns = line
-		.split("|")
-		.map((column) => column.trim())
-		.filter((column) => column.length > 0);
-	if (columns.length < 2) continue;
-	const [ruleName, pluginName] = columns;
-	if (!ruleName || !pluginName || pluginName === "Source") continue;
-	pluginNamespaces.add(normalise(pluginName));
-	builtInRules.add(`${normalise(pluginName)}/${ruleName}`);
+const listed = JSON.parse(rulesProcess.stdout) as ReadonlyArray<{ scope: string; value: string }>;
+for (const { scope, value } of listed) {
+	pluginNamespaces.add(normalise(scope));
+	builtInRules.add(`${normalise(scope)}/${value}`);
+}
+if (builtInRules.size === 0) {
+	throw new Error("oxlint --rules listed no rules; the rule table format may have changed.");
 }
 
 type Finding = { readonly preset: string; readonly rule: string };

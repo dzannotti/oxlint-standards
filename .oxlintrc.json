@@ -28,5 +28,5 @@
 		"unicorn/no-abusive-eslint-disable": "error",
 		"unicorn/consistent-function-scoping": "error"
 	},
-	"ignorePatterns": ["dist", "node_modules"]
+	"ignorePatterns": ["dist", "node_modules", "examples"]
 }
